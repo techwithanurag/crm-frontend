@@ -19,7 +19,7 @@ export default function UserLeads() {
 
   const fetchLeads = async () => {
     try {
-      const res = await axios.get("http://crm-backend-bhcn.onrender.com:5000/api/leads");
+      const res = await axios.get("http://crm-backend-bhcn.onrender.com/api/leads");
       setLeads(res.data);
     } catch (err) {
       console.error("Error fetching leads:", err);
@@ -34,7 +34,7 @@ export default function UserLeads() {
     }
 
     try {
-      await axios.post("http://crm-backend-bhcn.onrender.com:5000/api/leads", newLead);
+      await axios.post("http://crm-backend-bhcn.onrender.com/api/leads", newLead);
       fetchLeads();
       setNewLead({ name: "", phone: "", status: "", notes: "", followUp: "" });
       setShowForm(false);
@@ -49,7 +49,7 @@ export default function UserLeads() {
   const deleteLead = async (id) => {
     if (!window.confirm("Are you sure you want to delete this lead?")) return;
     try {
-      await axios.delete(`http://crm-backend-bhcn.onrender.com:5000/api/leads/${id}`);
+      await axios.delete(`http://crm-backend-bhcn.onrender.com/api/leads/${id}`);
       fetchLeads();
     } catch (err) {
       console.error("Error deleting lead:", err);

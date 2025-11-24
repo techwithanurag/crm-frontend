@@ -9,7 +9,7 @@ export default function AdminLogin() {
 
   const loginAdmin = async () => {
     try {
-      const res = await axios.post("http://crm-backend-bhcn.onrender.com:5000/api/admin/login", {
+      const res = await axios.post("http://crm-backend-bhcn.onrender.com/api/admin/login", {
         username,
         password,
       });
