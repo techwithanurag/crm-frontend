@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+// New login selection page
+import LoginSelection from "./pages/LoginSelection";
+
+// User pages
+import UserLogin from "./pages/UserLogin";
+import UserDashboard from "./pages/UserDashboard";
+import UserLeads from "./pages/UserLeads";
+
+// Admin pages
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminLeads from "./pages/AdminLeads";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+
+        {/* Default — choose login type */}
+        <Route path="/" element={<LoginSelection />} />
+
+        {/* Fix old dashboard route */}
+        <Route
+          path="/dashboard"
+          element={<Navigate to="/user/dashboard" replace />}
+        />
+
+        {/* User Routes */}
+        <Route path="/user/login" element={<UserLogin />} />
+        <Route path="/user/dashboard" element={<UserDashboard />} />
+        <Route path="/user/leads" element={<UserLeads />} />
+
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/leads" element={<AdminLeads />} />
+
+      </Routes>
+    </BrowserRouter>
   );
 }
 
