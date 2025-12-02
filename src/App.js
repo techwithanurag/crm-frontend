@@ -1,41 +1,49 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-// New login selection page
-import LoginSelection from "./pages/LoginSelection";
+import LoginPage from "./pages/LoginPage";
+import Register from "./pages/Register";
 
-// User pages
-import UserLogin from "./pages/UserLogin";
+// Dashboard pages
 import UserDashboard from "./pages/UserDashboard";
-import UserLeads from "./pages/UserLeads";
-
-// Admin pages
-import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+
+// Leads & CRM features
+import UserLeads from "./pages/UserLeads";
 import AdminLeads from "./pages/AdminLeads";
+import AddLead from "./pages/AddLead";
+
+
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
 
-        {/* Default — choose login type */}
-        <Route path="/" element={<LoginSelection />} />
+        {/* Auth Pages */}
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<Register />} />
 
-        {/* Fix old dashboard route */}
+        {/* Fix old links */}
+        <Route
+          path="/user/login"
+          element={<Navigate to="/login" replace />}
+        />
         <Route
           path="/dashboard"
           element={<Navigate to="/user/dashboard" replace />}
         />
 
-        {/* User Routes */}
-        <Route path="/user/login" element={<UserLogin />} />
+        {/* User routes */}
         <Route path="/user/dashboard" element={<UserDashboard />} />
         <Route path="/user/leads" element={<UserLeads />} />
+        <Route path="/user/add-lead" element={<AddLead />} />
 
-        {/* Admin Routes */}
-        <Route path="/admin" element={<AdminLogin />} />
+        {/* Admin routes */}
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/leads" element={<AdminLeads />} />
+        
+
 
       </Routes>
     </BrowserRouter>
