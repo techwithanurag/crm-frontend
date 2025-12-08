@@ -14,7 +14,7 @@ export default function AddLead() {
     source: "",
     budget: "",
     notes: "",
-    status: "New",
+    status: "New", // default value
   });
 
   const [message, setMessage] = useState("");
@@ -37,7 +37,7 @@ export default function AddLead() {
     }
 
     try {
-      await axios.post(`${API}/lead`, {
+      await axios.post(`${API}/leads`, {
         userId: user._id,
         ...lead,
       });
@@ -161,8 +161,14 @@ export default function AddLead() {
               onChange={updateValue}
             >
               <option>New</option>
-              <option>Contacted</option>
+              <option>Follow Up</option>
               <option>Qualified</option>
+              <option>Won</option>
+              <option>Lost</option>
+              <option>RNR</option>
+              <option>Stage1</option>
+              <option>Stage2</option>
+              <option>Stage3</option>
             </select>
           </div>
 
