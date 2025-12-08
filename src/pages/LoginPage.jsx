@@ -24,6 +24,8 @@ export default function LoginPage() {
 
       // Store token for protected routes
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("crmUser", JSON.stringify(res.data.user));
+
 
       // Store user object for dashboard lead fetching
       localStorage.setItem("crmUser", JSON.stringify(res.data.user));
