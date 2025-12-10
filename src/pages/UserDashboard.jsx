@@ -31,14 +31,16 @@ export default function UserDashboard() {
 
       {/* Sidebar */}
       <div className="w-64 bg-white shadow-md p-6">
-        <h2 className="text-xl font-bold mb-6">CRM Dashboard</h2>
+        <h2 className="text-xl font-bold mb-6">Welcome Back</h2>
 
-        <nav className="space-y-3 text-gray-700">
-          <button onClick={() => navigate("/user/dashboard")}>
+        <nav className="flex flex-col gap-3 text-gray-700">
+          <button className="text-left hover:text-indigo-600"
+                  onClick={() => navigate("/user/dashboard")}>
             Dashboard
           </button>
-
-          <button onClick={() => navigate("/user/leads")}>
+          
+          <button className="text-left hover:text-indigo-600"
+                   onClick={() => navigate("/user/leads")}>
             Leads
           </button>
         </nav>
