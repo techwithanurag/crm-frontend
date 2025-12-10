@@ -20,7 +20,7 @@ export default function UserLeads() {
       if (!user) return;
 
       try {
-        const res = await axios.get(`${API}/leads/${user._id}`);
+        const res = await axios.get(`${API}/leads/user/${user._id}`);
         setLeads(res.data);
       } catch {
         setMessage("❌ Error fetching leads");
