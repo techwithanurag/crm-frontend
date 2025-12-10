@@ -32,7 +32,7 @@ export default function UserLeads() {
   // Update status
   async function updateStatus(id, status) {
     try {
-      await axios.patch(`${API}/lead/${id}`, { status });
+      await axios.patch(`${API}/leads/update/${id}`, { status });
 
       setLeads((prev) =>
         prev.map((l) => (l._id === id ? { ...l, status } : l))
@@ -243,3 +243,5 @@ export default function UserLeads() {
     </div>
   );
 }
+
+

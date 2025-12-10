@@ -14,25 +14,26 @@ export default function AddLead() {
     source: "",
     budget: "",
     notes: "",
-    status: "New", // default value
+    status: "New",
   });
 
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // Handle input change
   function updateValue(e) {
     setLead({ ...lead, [e.target.name]: e.target.value });
   }
 
-  // Save lead
   async function saveLead(e) {
     e.preventDefault();
     setMessage("");
+    setLoading(true);
 
     const user = JSON.parse(localStorage.getItem("crmUser"));
 
-    if (!user || !user._id) {
-      setMessage("⚠ Please login again");
+    if (!user?._id) {
+      setMessage("Please login again");
+      setLoading(false);
       return;
     }
 
@@ -42,154 +43,159 @@ export default function AddLead() {
         ...lead,
       });
 
-      setMessage("🎉 Lead added successfully!");
-
-      setTimeout(() => navigate("/user/leads"), 900);
-    } catch (error) {
-      console.log("Lead Save Error:", error);
-      setMessage("❌ Failed to save lead");
+      setMessage("Lead added successfully");
+      setTimeout(() => navigate("/user/leads"), 800);
+    } catch (err) {
+      console.error(err);
+      setMessage("Failed to add lead");
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
-      <div className="w-full max-w-lg bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-700">
-        
+    <div className="min-h-screen bg-white p-6">
+      <div className="max-w-2xl mx-auto border border-gray-400 rounded-md p-2">
+
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-semibold text-white">Add New Lead</h2>
+          <h1 className="text-2xl font-semibold">Add Lead</h1>
           <button
             onClick={() => navigate("/user/leads")}
-            className="text-sm bg-gray-700 px-3 py-1 rounded-lg hover:bg-gray-600 text-white"
+            className="px-4 py-2 border rounded-md hover:bg-gray-100"
           >
-            ◀ Back
+            Back
           </button>
         </div>
 
         {/* Form */}
-        <form className="space-y-4" onSubmit={saveLead}>
-          
-          <div>
-            <label className="block text-gray-300 text-sm mb-1">Lead Name</label>
-            <input
-              name="name"
-              className="w-full px-3 py-2 rounded-lg bg-gray-700 text-white"
-              placeholder="Enter lead name"
-              value={lead.name}
-              onChange={updateValue}
-              required
-            />
-          </div>
+        <form onSubmit={saveLead} className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-          <div>
-            <label className="block text-gray-300 text-sm mb-1">Phone</label>
-            <input
-              name="phone"
-              type="tel"
-              className="w-full px-3 py-2 rounded-lg bg-gray-700 text-white"
-              placeholder="Enter phone number"
-              value={lead.phone}
-              onChange={updateValue}
-              required
-            />
-          </div>
 
-          <div>
-            <label className="block text-gray-300 text-sm mb-1">Email</label>
-            <input
-              name="email"
-              type="email"
-              className="w-full px-3 py-2 rounded-lg bg-gray-700 text-white"
-              placeholder="Enter email (optional)"
-              value={lead.email}
-              onChange={updateValue}
-            />
-          </div>
+          <Input
+            label="Name"
+            name="name"
+            value={lead.name}
+            onChange={updateValue}
+            required
+          />
 
-          {/* Lead Source */}
-          <div>
-            <label className="block text-gray-300 text-sm mb-1">Lead Source</label>
-            <select
-              name="source"
-              className="w-full px-3 py-2 rounded-lg bg-gray-700 text-white"
-              value={lead.source}
-              onChange={updateValue}
-              required
-            >
-              <option value="">Select source</option>
-              <option>Google Search</option>
-              <option>Facebook</option>
-              <option>Instagram</option>
-              <option>Referral</option>
-              <option>WhatsApp</option>
-              <option>Walk-in</option>
-              <option>Website Form</option>
-            </select>
-          </div>
+          <Input
+            label="Phone"
+            name="phone"
+            value={lead.phone}
+            onChange={updateValue}
+            required
+          />
 
-          {/* Budget */}
-          <div>
-            <label className="block text-gray-300 text-sm mb-1">Budget Range</label>
-            <input
-              name="budget"
-              className="w-full px-3 py-2 rounded-lg bg-gray-700 text-white"
-              placeholder="₹ 15,000 - ₹ 60,000"
-              value={lead.budget}
-              onChange={updateValue}
-            />
-          </div>
+          <Input
+            label="Email"
+            name="email"
+            value={lead.email}
+            onChange={updateValue}
+          />
 
-          {/* Notes */}
-          <div>
-            <label className="block text-gray-300 text-sm mb-1">Notes</label>
+          <Select
+            label="Source"
+            name="source"
+            value={lead.source}
+            onChange={updateValue}
+            required
+            options={[
+              "Google",
+              "Facebook",
+              "Instagram",
+              "Referral",
+              "WhatsApp",
+              "Walk-in",
+              "Website",
+            ]}
+          />
+
+          <Input
+            label="Budget"
+            name="budget"
+            value={lead.budget}
+            onChange={updateValue}
+          />
+
+          <Select
+            label="Status"
+            name="status"
+            value={lead.status}
+            onChange={updateValue}
+            options={[
+              "New",
+              "Follow Up",
+              "Qualified",
+              "Stage1",
+              "Stage2",
+              "Stage3",
+              "Won",
+              "Lost",
+              "RNR",
+            ]}
+          />
+
+          <div className="md:col-span-2">
+            <label className="text-sm font-medium">Notes</label>
             <textarea
               name="notes"
-              className="w-full px-3 py-2 rounded-lg bg-gray-700 text-white"
-              placeholder="Any requirements or discussion notes"
+              rows="3"
+              className="mt-1 w-full border rounded-md px-3 py-2"
               value={lead.notes}
               onChange={updateValue}
-            ></textarea>
-          </div>
-
-          {/* Status */}
-          <div>
-            <label className="block text-gray-300 text-sm mb-1">Status</label>
-            <select
-              name="status"
-              className="w-full px-3 py-2 rounded-lg bg-gray-700 text-white"
-              value={lead.status}
-              onChange={updateValue}
-            >
-              <option>New</option>
-              <option>Follow Up</option>
-              <option>Qualified</option>
-              <option>Won</option>
-              <option>Lost</option>
-              <option>RNR</option>
-              <option>Stage1</option>
-              <option>Stage2</option>
-              <option>Stage3</option>
-            </select>
+            />
           </div>
 
           {/* Submit */}
-          <button
-            type="submit"
-            className="w-full py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition"
-          >
-            Save Lead
-          </button>
+          <div className="md:col-span-2">
+            <button
+              disabled={loading}
+              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md"
+            >
+              {loading ? "Saving..." : "Save Lead"}
+            </button>
+
+            {message && (
+              <p className="mt-3 text-sm text-green-600">{message}</p>
+            )}
+          </div>
         </form>
-
-        {/* Feedback */}
-        {message && (
-          <p className="text-center text-green-400 text-sm mt-4">{message}</p>
-        )}
-
-        <p className="text-center text-gray-400 text-sm mt-6">
-          Anur CRM v1.2
-        </p>
       </div>
+    </div>
+  );
+}
+
+/* Reusable Components */
+
+function Input({ label, ...props }) {
+  return (
+    <div>
+      <label className="text-sm font-medium">{label}</label>
+      <input
+        {...props}
+        className="mt-1 w-full border rounded-md px-3 py-2"
+      />
+    </div>
+  );
+}
+
+function Select({ label, options, ...props }) {
+  return (
+    <div>
+      <label className="text-sm font-medium">{label}</label>
+      <select
+        {...props}
+        className="mt-1 w-full border rounded-md px-3 py-2"
+      >
+        <option value="">Select</option>
+        {options.map((opt) => (
+          <option key={opt} value={opt}>
+            {opt}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }
